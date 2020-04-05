@@ -22,7 +22,7 @@ jobs:
           name: Style check
           command: |
             source activate venv
-            flake8 --max-line-length=100 --exclude=versioneer.py /tmp/src/bidsutils
+            flake8 --max-line-length=100 --exclude=versioneer.py,docs /tmp/src/bidsutils
 workflows:
   version: 2.1
   build_test:

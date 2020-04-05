@@ -2,7 +2,6 @@
 Metadata-updating functions
 """
 from __future__ import print_function
-import sys
 import json
 import os.path as op
 
@@ -32,19 +31,21 @@ def intended_for_gen(fmap_nifti, niftis):
         nifti_meta = nifti.get_metadata()
         if nifti_meta['AcquisitionTime'] <= acq_time:
             continue
-        if nifti_meta['AcquisitionTime'] in out_dict \
-        and nifti not in out_dict[nifti_meta['AcquisitionTime']]:
+        if (nifti_meta['AcquisitionTime'] in out_dict) and \
+                (nifti not in out_dict[nifti_meta['AcquisitionTime']]):
             out_dict[nifti_meta['AcquisitionTime']].append(nifti)
         elif nifti_meta['AcquisitionTime'] not in out_dict:
             out_dict[nifti_meta['AcquisitionTime']] = [nifti]
     for num in sorted([x for x in out_dict]):
         target_entities = [x.get_entities() for x in out_dict[num]]
-        if 'acquisition' in fmap_entities \
-        and any([fmap_entities['acquisition'] != ent['datatype'] for ent in target_entities]):
+        acq_found = any([fmap_entities['acquisition'] != ent['datatype']
+                         for ent in target_entities])
+        if ('acquisition' in fmap_entities) and acq_found:
             continue
         if target_entities[0]['datatype'] == 'fmap':
-            if any([all([fmap_entities[x] == i[x] for x in fmap_entities \
-                    if x != 'run']) for i in target_entities]):
+            thing_found = any([all([fmap_entities[x] == i[x] for x in fmap_entities if x != 'run'])
+                               for i in target_entities])
+            if thing_found:
                 break
             else:
                 continue
@@ -88,12 +89,12 @@ def complete_jsons(bids_dir, subs, ses, overwrite):
             data = nifti.get_metadata()
             dump = 0
             json_path = nifti.path.replace('.nii.gz', '.json')
-            if 'EffectiveEchoSpacing' in data.keys() and \
-            (overwrite or 'TotalReadoutTime' not in data.keys()):
+            if ('EffectiveEchoSpacing' in data.keys()) and \
+                    (overwrite or 'TotalReadoutTime' not in data.keys()):
                 # This next bit taken shamelessly from fmriprep
                 pe_idx = {'i': 0, 'j': 1, 'k': 2}[data['PhaseEncodingDirection'][0]]
                 etl = nib.load(nifti.path).shape[pe_idx] \
-                      // float(data.get('ParallelReductionFactorInPlane', 1.0))
+                    // float(data.get('ParallelReductionFactorInPlane', 1.0))
                 ees = data.get('EffectiveEchoSpacing', None)
                 if ees is None:
                     raise Exception('Field "EffectiveEchoSpacing" not '
@@ -103,8 +104,8 @@ def complete_jsons(bids_dir, subs, ses, overwrite):
             if 'task' in nifti.get_entities() and (overwrite or 'TaskName' not in data.keys()):
                 data['TaskName'] = nifti.get_entities()['task']
                 dump = 1
-            if nifti.get_entities()['datatype'] == 'fmap' \
-            and (overwrite or 'IntendedFor' not in data.keys()):
+            if (nifti.get_entities()['datatype'] == 'fmap') \
+                    and (overwrite or 'IntendedFor' not in data.keys()):
                 data['IntendedFor'] = intended_for_gen(nifti, niftis)
                 dump = 1
             if dump == 1:
