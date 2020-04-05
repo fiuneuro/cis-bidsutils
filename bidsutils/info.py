@@ -19,13 +19,13 @@ authors = [author.split(', ')[1] + ' ' + author.split(', ')[0] for author in aut
 AUTHOR = 'FIU-Neuro developers'
 COPYRIGHT = 'Copyright 2020--now, FIU-Neuro developers'
 CREDITS = authors
-LICENSE = 'MIT'
+LICENSE = 'Apache 2.0'
 MAINTAINER = 'Taylor Salo'
 EMAIL = 'tsalo006@fiu.edu'
 STATUS = 'Prototype'
-URL = 'https://github.com/FIU-Neuro/bidsutils'
-PACKAGENAME = 'bidsutils'
-DESCRIPTION = 'bidsutils: Functions for BIDS datasets'
+URL = 'https://github.com/FIU-Neuro/cis-bidsutils'
+PACKAGENAME = 'cis-bidsutils'
+DESCRIPTION = 'cis-bidsutils: Functions for BIDS datasets'
 LONGDESC = """
 """
 

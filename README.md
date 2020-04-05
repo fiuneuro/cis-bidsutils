@@ -1,4 +1,4 @@
-# bidsutils
+# cis-bidsutils
 Miscellaneous functions for working with BIDS datasets.
 Used in conjunction with the FIU-Neuro CIS-processing workflow.
 
