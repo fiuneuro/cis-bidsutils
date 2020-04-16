@@ -1,6 +1,4 @@
-"""
-Metadata-updating functions
-"""
+"""Metadata-updating functions."""
 from __future__ import print_function
 import json
 import os.path as op
@@ -11,6 +9,8 @@ from bids import BIDSLayout
 
 def intended_for_gen(fmap_nifti, niftis):
     """
+    Generate IntendedFor field for a given fieldmap file.
+
     For a given fieldmap niftis, finds niftis from a list that follow it in time,
     until the next nifti of similar type appears (e.g given an dir-AP fieldmap,
     continue until you recieve another dir-AP fieldmap or until no more niftis of
@@ -18,7 +18,6 @@ def intended_for_gen(fmap_nifti, niftis):
 
     Parameters
     ----------
-
     fmap_nifti: Fieldmap to generate "IntendedFor" Field
     nifits: list of possible niftis
 
@@ -63,6 +62,7 @@ def intended_for_gen(fmap_nifti, niftis):
 def complete_jsons(bids_dir, subs, ses, overwrite):
     """
     Assign 'IntendedFor' field to field maps in BIDS dataset.
+
     Uses the most recent field map before each functional or DWI scan, based on
     acquisition time.
     Calculate 'TotalReadoutTime'.
@@ -115,7 +115,7 @@ def complete_jsons(bids_dir, subs, ses, overwrite):
 
 def clean_metadata(bids_dir, sub, sess):
     """
-    Removes unnecessary metadata from scan sidecar jsons
+    Remove unnecessary metadata from scan sidecar jsons.
 
     Parameters
     ----------
