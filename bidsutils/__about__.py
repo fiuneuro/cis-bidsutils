@@ -14,5 +14,5 @@ __credits__ = ['Taylor Salo', 'Adam Kimbler', 'Michael Riedel']
 __packagename__ = 'cis-bidsutils'
 
 DOWNLOAD_URL = (
-    'https://github.com/FIU-Neuro/{name}/archive/{ver}.tar.gz'.format(
+    'https://github.com/fiuneuro/{name}/archive/{ver}.tar.gz'.format(
         name=__packagename__, ver=__version__))
