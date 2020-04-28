@@ -41,7 +41,8 @@ def anon_acqtimes(dset_dir):
             acq_times = df['acq_time'].apply(parser.parse)
             acq_times = (acq_times - diff).astype(str)
             df['acq_time'] = acq_times
-            # df.to_csv(scans_file, sep='\t', index=False)
+            df.to_csv(scans_file, sep='\t', line_terminator='\n',
+                      na_rep='n/a', index=False)
         else:
             # Separated from dataset sessions in case subject missed some
             sub_ses = sorted(layout.get_sessions(subject=sub))
@@ -59,4 +60,5 @@ def anon_acqtimes(dset_dir):
                 acq_times = df['acq_time'].apply(parser.parse)
                 acq_times = (acq_times - diff).astype(str)
                 df['acq_time'] = acq_times
-                # df.to_csv(scans_file, sep='\t', index=False)
+                df.to_csv(scans_file, sep='\t', line_terminator='\n',
+                          na_rep='n/a', index=False)
