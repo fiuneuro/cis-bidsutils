@@ -1,7 +1,38 @@
+import re
+import os
 import os.path as op
 import shutil
 
 import pandas as pd
+
+
+def fix_runs(layout):
+    """Remove zero-padding from run numbers in a dataset.
+
+    A common mistake in dataset preparation is to include leading zeros in run
+    numbers (e.g., *_run-01_* instead of _run-1_*).
+
+    Parameters
+    ----------
+    layout : bids.BIDSLayout
+    """
+    RUN_REGEX = r'(_run-)[0]+(\d+_)'
+    RUN_OUT_REGEX = r'\1\2'
+
+    # Rename contents of text files
+    text_files = layout.get(extension=['json', 'tsv'])
+    for f in text_files:
+        with open(f, 'r') as fo:
+            d = fo.read()
+        d = re.sub(RUN_REGEX, RUN_OUT_REGEX, d)
+        with open(f, 'w') as fo:
+            fo.write(d)
+
+    # Rename files
+    files = layout.get()
+    for f in files:
+        out_fname = re.sub(RUN_REGEX, RUN_OUT_REGEX, f.path)
+        os.rename(f.path, out_fname)
 
 
 def merge_datasets(source_dset, target_dset, project_name, sub, ses=None):
